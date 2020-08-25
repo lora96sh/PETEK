@@ -2,127 +2,43 @@
 <?php 
 header('Content-Type: application/json');
 session_start();
-if (isset($_POST['addFamily'])) {
-    $fName = $_POST['fName'];
-    $adminEmail = $_SESSION['email'];
-    $sql = "INSERT INTO `families`( `fName`, `admin_email`)
- VALUES ('$fName','$adminEmail')";
+if (isset($_POST['addList'])) {
+    $lName = $_POST['lName'];
+    $userEmail = $_SESSION['email'];
+    $sql = "INSERT INTO `lists`( `lName`, `user_email`)
+ VALUES ('$lName','$userEmail')";
 
     if ($conn->query($sql) === TRUE) {
         $last_id = $conn->insert_id;
-        header("Location: ../family.php?familyId=$last_id");
+        $data = mysqli_query($conn,"select * from products where user_email='$userEmail'");
+        $response = array();
+
+        while($row = mysqli_fetch_assoc($data)){
+            $response[] = $row;
+        }
+        foreach ($response as $key => $value) {
+            $pName = $value['pName'];
+            $sql = "INSERT INTO list_products (pName,list_id) VALUES ('$pName','$last_id')";
+            if ($conn->query($sql) === false) {
+                die('Invalid query: ' . $conn->error);
+            }
+        }
+
+        $sql = "DELETE FROM products WHERE user_email='$userEmail'";
+
+        if ($conn->query($sql) === TRUE) {
+            header("Location: ../listProducts.php?listId=$last_id");
+        }else{
+            echo json_encode($conn->error);
+        }
     } else {
         echo json_encode($conn->error);
     }
 }
 
-if (isset($_POST['addProduct'])){
-    $familyId = $_POST['familyId'];
-    $pName = $_POST['pName'];
-    $pQnt = $_POST['pQnt'];
-    $sql = "INSERT INTO `family_products`( `pName`, `pQnt`, `family_id`)
-    VALUES ('$pName','$pQnt','$familyId')";
-
-    if ($conn->query($sql)===TRUE) {
-        header("Location: ../family.php?familyId=$familyId");
-    }else {
-        echo json_encode($conn->error);
-    }
-}
-
-if (isset($_POST['joinFamily'])){
-    $familyId = $_POST['familyId'];
-    $from = $_SESSION['email'];
-    $to = $_POST['to'];
-
-    $data = mysqli_query($conn,"select * from requests where (`fromEmail`= '$from' && family_id='$familyId')");
-    $response = array();
-    while($row = mysqli_fetch_assoc($data)){
-        $response[] = $row;
-    }
-    if (count($response) > 0){
-        echo json_encode(false);
-        exit();
-    }else {
-
-        $sql = "INSERT INTO `requests`( `fromEmail`, `toEmail`, `family_id`)
-    VALUES ('$from','$to','$familyId')";
-
-        if ($conn->query($sql) === TRUE) {
-            echo json_encode($conn->insert_id);
-        } else {
-            echo json_encode($conn->error);
-        }
-    }
-}
-
-if (isset($_POST['allProducts'])) {
-    $familyId = $_SESSION['familyId'];
-    $data = mysqli_query($conn,"select * from family_products where family_id='$familyId'");
-
-    $response = array();
-
-    while($row = mysqli_fetch_assoc($data)){
-        $response[] = $row;
-    }
-
-    echo json_encode($response);
-    exit;
-}
-
-if (isset($_POST['allFamilies'])) {
-
-    $data = mysqli_query($conn,"select * from families");
-
-    $response = array();
-
-    while($row = mysqli_fetch_assoc($data)){
-        $response[] = $row;
-    }
-
-    echo json_encode($response);
-    exit;
-}
-
-if (isset($_POST['requests'])) {
-    $familyId = $_SESSION['familyId'];
-    $data = mysqli_query($conn,"select * from requests where (family_id='$familyId' && accepted=false)");
-
-    $response = array();
-
-    while($row = mysqli_fetch_assoc($data)){
-        $response[] = $row;
-    }
-
-    echo json_encode($response);
-    exit;
-}
-
-if (isset($_POST['acceptReq'])) {
-    $familyId = $_SESSION['familyId'];
-    $customer = $_POST['customer'];
-    $reqId = $_POST['reqId'];
-
-    $sql = "UPDATE `requests`
-    SET `accepted`=true WHERE id=$reqId";
-    if ($conn->query($sql)===TRUE) {
-        $sql = "INSERT INTO `family_members`( `memberEmail`,`family_id`)
-        VALUES ('$customer','$familyId')";
-
-        if ($conn->query($sql) === TRUE) {
-            echo json_encode($conn->insert_id);
-        } else {
-            echo json_encode($conn->error);
-        }
-    }else {
-        $conn->error;
-    }
-    exit;
-}
-
-if (isset($_POST['members'])) {
-    $familyId = $_SESSION['familyId'];
-    $data = mysqli_query($conn,"select * from family_members where family_id='$familyId'");
+if (isset($_POST['allProducts'])){
+    $listId = $_SESSION['listId'];
+    $data = mysqli_query($conn,"select * from list_products where list_id='$listId'");
 
     $response = array();
 
@@ -147,19 +63,43 @@ if (isset($_POST['delMember'])) {
     exit;
 }
 
-if (isset($_POST['rejectReq'])){
-    $delId = $_POST['reqId'];
+if (isset($_POST['delList'])){
+    $listId = $_SESSION['listId'];
     // sql to delete a record
-    $sql = "DELETE FROM requests WHERE id='$delId'";
+    $sql = "DELETE FROM list_products WHERE list_id='$listId'";
 
     if ($conn->query($sql) === TRUE) {
-        echo true;
+        $sql = "DELETE FROM lists WHERE id='$listId'";
+        if ($conn->query($sql) === TRUE) {
+            header("Location: ../list.php?status=success");
+        } else {
+            echo "Error deleting record: " . $conn->error;
+        }
     } else {
         echo "Error deleting record: " . $conn->error;
     }
     exit;
 }
 
+if (isset($_GET['listId'])){
+    $listId = htmlspecialchars($_GET["listId"]);
+    $data = mysqli_query($conn,"select * from list_products where list_id='$listId'");
+    $response = array();
+
+    while($row = mysqli_fetch_assoc($data)){
+        $response[] = $row;
+    }
+    foreach ($response as $key => $value) {
+        $pName = $value['pName'];
+        $pQnt = 1;
+        $email = $_SESSION['email'];
+        $sql = "INSERT INTO products (pName,pQnt,user_email) VALUES ('$pName','$pQnt','$email')";
+        if ($conn->query($sql) === false) {
+            die('Invalid query: ' . $conn->error);
+        }
+    }
+    header("Location: ../list.php?status=success");
+}
 
 // end of the file
 $conn->close();

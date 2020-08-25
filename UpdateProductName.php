@@ -2,7 +2,7 @@
 require_once('db.php');
 $pName=$_POST['pName'];
 $id=$_POST['id'];
-$sql = "UPDATE `AllProducts`
+$sql = "UPDATE `purchasedProducts`
 SET `pName`='$pName'
  WHERE id=$id";
 if ($conn->query($sql)===TRUE) {

@@ -1,6 +1,6 @@
 <?php require_once("db.php");  ?>
- <?php  
-
+ <?php
+ session_start();
  $loginDate= isset($_SESSION['loginDate'])? $_SESSION['loginDate']:
         isset($_COOKIE['loginDate'])?$_COOKIE['loginDate']:null;
  $email= isset($_SESSION['email'])? $_SESSION['email']:
@@ -12,7 +12,8 @@ require_once "Parts/Header.php";
 <body>
 <br><br>
 <div class="container my-3">
-            <h3>Products</h3>
+            <h3>Your Products Products</h3>
+            <br>
             <table class="table" id="productsList">
                 <div class="container">
                     <thead>
@@ -25,7 +26,7 @@ require_once "Parts/Header.php";
                 <tbody>
                      <!-- Products will be added -->
                  <?php
-                $sql = "SELECT * FROM AllProducts";
+                $sql = "SELECT * FROM purchasedProducts WHERE customer_email='$email'";
                 $result = $conn->query($sql);
                 if ($result->num_rows > 0) {
                     // output data of each row
@@ -47,7 +48,7 @@ require_once "Parts/Header.php";
                 ?>
                 </tbody>
             </table>
-            <a href="list.php?login=success"><button  class="btn btn-primary"> Back </button> </a>
+            <a href="list.php?status=success"><button  class="btn btn-primary"> Back </button> </a>
     </div>
 
     <div class="modal fade remove" tabindex="-1" role="dialog">

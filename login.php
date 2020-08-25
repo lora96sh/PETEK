@@ -2,6 +2,7 @@
 <?php
 require 'db.php';
 session_start();
+$_SESSION['loginDate'] = date("h:i:sa");
  $loginDate= isset($_SESSION['loginDate'])? $_SESSION['loginDate']:
         isset($_COOKIE['loginDate'])?$_COOKIE['loginDate']:null;
 $email=$_POST['email'];
@@ -19,6 +20,7 @@ if(empty($email)|| empty($password) ){
         header("location: index.php?error=wrongpassword");
         exit();
     }else{
+        $loginDate = date("h:i:sa");
         $_SESSION['email'] = $email;
         $_SESSION['loginDate'] = $loginDate;
         if ($_POST['stayloggedin']=='on'){

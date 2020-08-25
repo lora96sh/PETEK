@@ -1,6 +1,8 @@
 <?php require_once("db.php");  ?>
  
- <?php 
+ <?php
+// session_start();
+
  if (!isset($_GET["status"])){
      header("Location:index.php?status=showMsg");
      exit();
@@ -16,14 +18,37 @@
 require_once "Parts/Header.php";
  ?> 
 <body >
+    <div id="app">
     <br><br>
     <div class="container my-3">
-     <h5>you logged in at <?=$loginDate?></h5>
+     <h5>You logged in at <?=$loginDate?></h5>
         <br>
-        <button type="button" data-toggle="modal" data-target=".add-product-modal" 
-                class="btn btn-primary">Add New Product</button>
-                <button type="button" name="btnRefreshTable" id="btnRefreshTable" class="btn btn-primary">Refresh Table</button>
-            <a href="products.php"> <button id="productsList" class="btn btn-primary" style="margin-left:50%; ">Products List</button></a>
+        <div class="row">
+            <div class="col-md-12">
+            <button type="button" data-toggle="modal" data-target=".add-product-modal" class="btn btn-primary">Add New Product</button>
+        <a href="products.php"> <button type="button" id="productsList" class="btn btn-primary">Purchased Products List</button></a>
+            <button type="button" data-toggle="modal" data-target=".add-family-modal" class="btn btn-primary">Create Family</button>
+            <button type="button" data-toggle="modal" data-target=".add-list-modal" class="btn btn-primary">Save List</button>
+            <!--add from previous list start-->
+                <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Add from previous Lists
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <ul style="list-style-type:none;">
+                    <?php
+                    foreach ($lists as $key => $value) {
+                        echo '<li><a href="api/listApis.php?listId='. $value['id'] .'"><button class="btn btnDemo1" id="Demo'. $key .'">'. $value['lName'].'</button></a></li>';
+                    }
+                    if (count($lists)==0){
+                        echo '<button class="btn btnDemo1" id="Demo">No List exist</button></a>';
+                    }
+                    ?>
+                    </ul>
+            </div>
+            <!--add from previous list end-->
+            </div>
+        </div>
+<!--        <button type="button" name="btnRefreshTable" id="btnRefreshTable" class="btn btn-primary">Refresh Table</button>-->
             <br><br>
             <h3>Products To Buy</h3>
             <table class="table" id="products">
@@ -37,31 +62,24 @@ require_once "Parts/Header.php";
                     </thead>
                 </div>
                 <tbody>
-                     <!-- Products will be added -->
-                 <?php
-                $sql = "SELECT * FROM Products";
-                $result = $conn->query($sql);
-                if ($result->num_rows > 0) {
-                    // output data of each row
-                ?>
-                    <?php  while($row = $result->fetch_assoc()):?>
-                    <!-- html code in the loop -->
-                    <tr data-id="<?= $row['id'] ;?>">
-                        <td class="pName"><?php echo $row['pName'] ;?></td>
-                        <td class="pQnt"><?= $row['pQnt'] ;?></td>
-                        <td>
-                            <button class="btn btnAdd">Confirm Buy</button> |
-                            <button class="btn btnRemove">Remove</button>
-                        </td>
-                    </tr>
-                    <?php endwhile;?>
-                    <?php  } else {
-                    echo "0 results";
-                }
-                $conn->close();
-                ?>
+                <tr v-if="products.length === 0">
+                    <td><b>Empty list!</b></td>
+                </tr>
+                <tr v-for="item in products" :class="{ 'color' : item.purchased === '1'}">
+                    <td class="pName">{{ item.pName }}</td>
+                    <td class="pQnt">{{ item.pQnt }}</td>
+                    <td>
+                        <button class="btn" @click="purchase(item)">Confirm Buy</button> |
+                        <button class="btn" @click="deleteModal(item.id)">Remove</button>
+                    </td>
+                </tr>
                 </tbody>
             </table>
+        <br><br>
+
+        <div class="footer">
+            © 2020 by Lora Shimshon & Shay Ben Haim
+        </div>
     </div>
 
     <div class="modal fade remove" tabindex="-1" role="dialog">
@@ -77,14 +95,33 @@ require_once "Parts/Header.php";
                     <p>You are about to delete </p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btnRemoveConfirm btn-danger">Delete</button>
+                    <button type="button" class="btn btn-danger" @click="deleteProduct">Delete</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="add-product-modal modal" tabindex="-1" role="dialog">
+        <div class="modal fade confirm" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Success!!</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h6>Item Purchased Successfully :)</h6>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="add-product-modal modal" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -95,59 +132,102 @@ require_once "Parts/Header.php";
                 </div>
             <div class="modal-body" id="modalBodyaddProduct">
 
-                    <form id="addProduct" method="POST" action="insert.php">
+                <form id="product" method="POST" action="api/addProduct.php">
                         <div class="row">
                         <div class="ui-widget">
                             <div class="col md-6">
                                 <label for="prodName" class="">Product*: </label><br>
-                                <input id="prodName" type="text" class="form-control" placeholder="Product" 
+                                <input id="prodName" type="text" name="pName" class="form-control" placeholder="Product"
                                     aria-describedby="helpId" required> 
                             </div>
                         </div>
                             <div class="col md-6">
                                 <label for="prodQuantity" class="">Quantity*: </label><br>
-                                <input id="prodQuantity" type="text" class="form-control" placeholder="Quantity" 
+                                <input id="prodQuantity" type="text" name="pQnt" class="form-control" placeholder="Quantity"
                                     aria-describedby="helpId" required> 
                             </div>
+
                         </div>
-                        <input type="submit" class="d-none btnSubmit">
+<!--                        <input type="submit" class="d-none btnSubmit">-->
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btnAddProduct btn-primary">Add Product</button>
-                    <button type="button" class="btn btn-secondary resetAddProductsForm" data-dismiss="modal">Done</button>
+                    <button type="submit" form="product" class="btn btn-primary">Add Product</button>
+                    <button type="button" class="btn btn-secondary resetAddProductsForm" data-dismiss="modal">Cancel</button>
                 </div>
+        </div>
             </div>
         </div>
     </div>
 
-    <div class="container">
-        <br><br>
-        <div class="container">
-            <h3>Your List</h3>
-        </div>
-        <table class="container" id="list">
-            <thead>
-                <tr>
-                    <th>Product</th>
-                    <th>Quantity</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                
-            </tbody>
-        </table>
-        <div class="row my-3">
-            <div class="col">
-            <button id="confirm" type="submit" class="btn btn-primary btnConfitmList">Save List</button>
-        </div>
-    </div>
-    </div> 
-    <br><br>
+        <div class="add-family-modal modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add Family</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" id="modalBodyaddProduct">
 
-    <div class="footer">
-        © 2020 by Lora Shimshon & Shay Ben Haim 
+                        <form id="addFamily" method="POST" action="api/familyApis.php">
+                            <div class="row">
+                                <div class="ui-widget">
+                                    <div class="col md-12">
+                                        <label for="familyName" class="">Family Name : </label><br>
+                                        <input id="familyName" type="text" name="fName" class="form-control" placeholder="Enter Family Name"
+                                               aria-describedby="helpId" required>
+                                    </div>
+                                    <input name="addFamily" type="hidden" value="1">
+                                </div>
+                            </div>
+<!--                            <input type="submit" class="d-none btnSubmit">-->
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" form="addFamily" class="btn btn-primary">Add Family</button>
+                        <button type="button" class="btn btn-secondary resetAddProductsForm" data-dismiss="modal">Done</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="add-list-modal modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add List</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" id="modalBodyaddProduct">
+
+                        <form id="addList" method="POST" action="api/listApis.php">
+                            <div class="row">
+                                <div class="ui-widget">
+                                    <div class="col sm-12">
+                                        <label for="listName" class="">List Name : </label>
+                                        <input id="listName" type="text" name="lName" class="form-control" placeholder="Enter List Name"
+                                               required>
+                                    </div>
+                                </div>
+                            </div>
+                            <input name="addList" type="hidden" value="1">
+                            <!--                            <input type="submit" class="d-none btnSubmit">-->
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" form="addList" class="btn btn-primary">Add List</button>
+                        <button type="button" class="btn btn-secondary resetAddProductsForm" data-dismiss="modal">Done</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br><br>
+
     </div>
 
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -161,6 +241,90 @@ require_once "Parts/Header.php";
             crossorigin="anonymous"></script>
         <script src="javascript.js" ></script>
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<style>
+    .color {
+        background-color: #90EE90;
+    }
+</style>
 </body>
 </html>
+<script>
+    let application = new Vue({
+        el:'#app',
+        data () {
+            return{
+                products: [],
+                productToDel: 0
+            }
+        },
+        created () {
+            console.log('page created')
+            this.getAllProducts()
+        },
+        methods: {
+            getAllProducts (){
+                var self = this;
+                $.ajax({
+                    url: 'api/getProducts.php',
+                    method: 'GET',
+                    success: function (data) {
+                        self.products = JSON.parse(data);
+                        console.log('resp-->', JSON.parse(data))
+                    },
+                    error: function (error) {
+                        console.log("error",error);
+                    }
+                });
+            },
+            deleteModal (id) {
+                $(".remove.modal").modal("show");
+                this.productToDel = id
+                console.log('prod to del', this.productToDel);
+            },
+            deleteProduct (){
+                const self = this
+                console.log('product delete',this.productToDel);
+                const data = {
+                  id: this.productToDel,
+                    listProdDel:1
+                };
+                $.ajax({
+                    url: 'api/deleteProduct.php',
+                    method: 'POST',
+                    data: data,
+                    success: function () {
+                        console.log('deleted successfully')
+                        self.getAllProducts();
+                        $(".remove.modal").modal("hide");
+                        this.productToDel = 0
+                    },
+                    error: function (error) {
+                        console.log("error",error);
+                    }
+                });
+            },
+            purchase (item) {
+                const self = this;
+                console.log('item purchase',item);
+                const data = {
+                    id: item.id,
+                    name: item.pName
+                    }
+                $.ajax({
+                    url: 'api/purchaseProduct.php',
+                    method: 'POST',
+                    data: data,
+                    success: function () {
+                        console.log('purchased successfully')
+                        self.getAllProducts();
+                        $(".confirm.modal").modal("show");
+                    },
+                    error: function (error) {
+                        console.log("error",error);
+                    }
+                });
+            }
+        }
+    });
+</script>

@@ -1,75 +1,51 @@
 <?php require_once("db.php");  ?>
- 
- <?php
- require_once "Parts/Header.php";
 
-  session_start();
- $id = "";
- $fName = "";
- $adminEmail = "";
-// if (!isset($_GET["familyId"])){
-     $id = htmlspecialchars($_GET["familyId"]);
-     $_SESSION['familyId'] = $id;
-     $sql ="SELECT * FROM families WHERE id = '$id' ";
-    $result = $conn->query($sql);
-    $row = $result->fetch_assoc();
-    if(!empty($row)){
-        $fName = $row['fName'];
-        $adminEmail = $row['admin_email'];
-    }
-//     exit();
-// }
+ <?php
+ session_start();
+ require_once "Parts/Header.php";
  ?>
 
 <body >
     <div id="app">
     <br><br>
     <div class="container my-3">
-        <h2 style="color: #007BFF">Welcome to family <?=$fName?></h2>
-        <h4>A family created by <?=$adminEmail?></h4>
-     <br>
         <div>
-        <button type="button" data-toggle="modal" data-target=".add-product-modal" class="btn btn-primary">Add New Product</button>
-            <br><br>
-            <h3>Products To Buy</h3>
+            <h3>Families that you can join</h3>
             <table class="table" id="products">
                 <div class="container">
                     <thead>
                     <tr>
-                        <th>Product</th>
-                        <th>Quantity</th>
+                        <th>Family Name</th>
+                        <th>Family Admin</th>
                         <th>Action</th>
                     </tr>
                     </thead>
                 </div>
                 <tbody>
-                <tr v-for="item in products" data-id="">
-                    <td class="pName">{{ item.pName }}</td>
-                    <td class="pQnt">{{ item.pQnt }}</td>
+                <tr v-for="item in families" data-id="">
+                    <td class="pName">{{ item.fName }}</td>
+                    <td class="pQnt">{{ item.admin_email }}</td>
                     <td>
-                        <button class="btn" @click="purchase(item)">Confirm Buy</button> |
-                        <button class="btn" @click="deleteModal(item.id)">Remove</button>
+                        <button class="btn btn-primary" @click="joinRequest(item)">Join</button>
                     </td>
                 </tr>
                 </tbody>
             </table>
     </div>
 
-    <div class="modal fade remove" tabindex="-1" role="dialog">
+    <div class="modal fade confirmation" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Are you sure?</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <p>You are about to delete </p>
+                    <h5 class="text-center">{{ message }}</h5>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" @click="deleteProduct">Delete</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
                 </div>
             </div>
         </div>
@@ -133,12 +109,12 @@
         </div>
     </div>
 
-    </div>
-    </div> 
-    <br><br>
+        <br><br>
+        <div class="footer">
+            © 2020 by Lora Shimshon & Shay Ben Haim
+        </div>
 
-    <div class="footer">
-        © 2020 by Lora Shimshon & Shay Ben Haim 
+    </div>
     </div>
     </div>
 
@@ -161,25 +137,25 @@
         el:'#app',
         data () {
             return{
-                products: [],
-                productToDel: 0
+                families: [],
+                message: ''
             }
         },
         created () {
             console.log('in family created')
-            this.getAllProducts()
+            this.getAllFamilies()
         },
         methods: {
-            getAllProducts (){
+            getAllFamilies (){
                 var self = this;
                 $.ajax({
                     url: 'api/familyApis.php',
                     method: 'POST',
-                    data:{allProducts:1},
+                    data:{allFamilies:1},
                     success: function (data) {
                         if (data) {
-                            self.products = data;
-                            console.log('all family products-->', data)
+                            self.families = data;
+                            console.log('all family-->', data)
                         }
                     },
                     error: function (error) {
@@ -187,36 +163,27 @@
                     }
                 });
             },
-            deleteModal (id) {
-                $(".remove.modal").modal("show");
-                this.productToDel = id
-            },
-            deleteProduct (){
-                console.log('product delete',this.productToDel);
+            joinRequest (family) {
+                console.log('request to join family id ',family);
+                const data = {
+                    joinFamily: 1,
+                    to : family.admin_email,
+                    familyId: family.id
+                };
+                var self = this;
                 $.ajax({
-                    url: 'api/deleteProduct.php',
+                    url: 'api/familyApis.php',
                     method: 'POST',
-                    data: {id:this.productToDel},
-                    success: function () {
-                        console.log('deleted successfully')
-                        $(".remove.modal").modal("hide");
-                        this.productToDel = 0
-                    },
-                    error: function (error) {
-                        console.log("error",error);
-                    }
-                });
-                this.getAllProducts();
-            },
-            purchase (item) {
-                console.log('item purchase',item);
-                $.ajax({
-                    url: 'api/purchaseProduct.php',
-                    method: 'POST',
-                    data: {name: item.pName},
-                    success: function () {
-                        console.log('purchased successfully')
-                        $(".confirm.modal").modal("show");
+                    data: data,
+                    success: function (data) {
+                        if (!data) {
+                            console.log('already requested-->', data)
+                            self.message = "Already Requested for this Family!";
+                            $(".confirmation.modal").modal("show");
+                        } else {
+                            self.message = "Request Sent Successfully!";
+                            $(".confirmation.modal").modal("show");
+                        }
                     },
                     error: function (error) {
                         console.log("error",error);

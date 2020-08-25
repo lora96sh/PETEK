@@ -1,0 +1,22 @@
+{
+  "name": "hw",
+  "version": "1.0.0",
+  "description": "\"# HW\"",
+  "main": "javascript.js",
+  "scripts": {
+    "compile:sass": "node-sass sass/style.scss CSS/dark.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lora96sh/HW.git"
+  },
+  "author": "hhw",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lora96sh/HW/issues"
+  },
+  "homepage": "https://github.com/lora96sh/HW#readme",
+  "devDependencies": {
+    "node-sass": "^4.14.1"
+  }
+}

@@ -1,11 +1,18 @@
 <?php require("../db.php");?>
-<?php 
-header('Content-Type: application/json');
-$sql = "SELECT * FROM Products";
-$result = $conn->query($sql);
-$products = array();
-while($row = $result->fetch_assoc()){
-    $products[]=$row;
+<?php
+session_start();
+$email= isset($_SESSION['email'])? $_SESSION['email']:
+    isset($_COOKIE['email'])?$_COOKIE['email']:null;
+$userData = mysqli_query($conn,"select * from products where user_email='$email' ORDER BY pName");
+$response = array();
+
+while($row = mysqli_fetch_assoc($userData)){
+
+    $response[] = $row;
 }
-echo json_encode($products);
+
+echo json_encode($response);
+exit;
+
+
 $conn->close();

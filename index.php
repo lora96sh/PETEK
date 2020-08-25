@@ -61,10 +61,12 @@
                     <br>
                     <a href="forgotPassword.php">Forgot Your Password?</a>
             </form>
+            <br><br>
+            <footer>
+                © 2020 by Lora Shimshon & Shay Ben Haim
+            </footer>
  </div>
-<footer>
-             © 2020 by Lora Shimshon & Shay Ben Haim 
-        </footer>
+
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="Script/javascript.js" type="text/javascript"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"

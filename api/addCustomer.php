@@ -23,4 +23,4 @@ $mysqli->close();
 
 
 // end of the file
-$conn->close();  -->
+$conn->close();

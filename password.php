@@ -1,42 +1,46 @@
 <?php var_dump($_POST); ?>
 <?php
-  session_start();
+require "Parts/Header.php";
+require 'db.php';
 
-    $email= isset($_SESSION['email'])? $_SESSION['email']:
-        isset($_COOKIE['email'])?$_COOKIE['email']:null;
-
-    $phone= isset($_SESSION['phone'])? $_SESSION['phone']:
-        isset($_COOKIE['phone'])?$_COOKIE['phone']:null;
-
-    $nickname= isset($_SESSION['nickname'])? $_SESSION['nickname']:
-       isset($_COOKIE['nickname'])?$_COOKIE['nicknaeme']:null;
-    
-    $password = htmlspecialchars($_POST['password']);  
-  
-    $_SESSION['email'] = $email;
-    $_POST['email']=$email;
-    $_SESSION['phone'] = $phone;
-    $_SESSION['nickname'] = $nickname;
-    $_SESSION['password'] = $password;
-
-
-        require_once("db.php");
+session_start();
+$error = "";
+$message = "";
+if(isset($_POST['passSubmit'])) {
+    $pass1 = $_POST['password'];
+    $pass2 = $_POST['password2'];
+    if ($pass1 == $pass2){
+        $userEmail = isset($_SESSION["email"]) ? $_SESSION["email"] : null;
+        if ($userEmail !== null){
+            $sql = "UPDATE `Customers`
+            SET `password`='$pass1'
+             WHERE email='$userEmail'";
+            if ($conn->query($sql)===TRUE) {
+                $message = "Password Changed Successfully!";
+            } else {
+                $conn->error;
+            }
+        }else{
+            $error = "No User to Update Password!";
+        }
+    } else {
+        $error = "Passwords do not match!";
+    }
+}
   ?>
-  
-
-  <?php  require_once "Parts/HeaderStart.php"; ?>
-
-
-
 
 <body >
+<div class="container my-3">
+    <br><br>
  <div class="passwordBox">
     <h1>Choose Password</h1>
 <!-- onsubmit="return checkPassword()"*/ -->
-      <form id="passwordForm" method="post" action="insertCustomer.php">
-        <br><br>
+      <form id="passwordForm" method="post" action="">
+          <h2 style="color: green"><?php echo $message?></h2>
+          <h4 style="color: red"><?php echo $error?></h4>
+          <br><br>
         <div class="form-group" >
-        <label for="password">password:</label>
+        <label for="password">Password:</label>
                 <input type="password" name="password" id="password" class="form-control" placeholder="" required>
         </div>
 
@@ -47,8 +51,8 @@
         <br>
 
         <div class="form-group" >
-          <button class="btn btn-primary" >
-    <button type="submit" class="btn btn-primary btn-block">Regist!</button>
+<!--          <button class="btn btn-primary" >-->
+          <button type="submit" name="passSubmit" class="btn btn-primary btn-block">Regist!</button>
 
           </button>
         </div>
@@ -58,6 +62,8 @@
     <footer>
         © 2020 by Lora Shimshon & Shay Ben Haim 
     </footer>
+
+</div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"

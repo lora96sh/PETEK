@@ -6,11 +6,16 @@
  $email= isset($_SESSION['email'])? $_SESSION['email']:
         isset($_COOKIE['email'])?$_COOKIE['email']:null;
 
+ $id = htmlspecialchars($_GET["id"]);
 
-    $id=$_GET["id"];
-    $sql = "SELECT * FROM AllProducts WHERE id=$id";
-    $result = $conn->query($sql);
-    $product = $result->fetch_assoc();
+//    $sql = "SELECT * FROM products WHERE id='$id'";
+//    $result = $conn->query($sql);
+//    $product = $result->fetch_assoc();
+
+ $data = mysqli_query($conn,"select * from purchasedProducts where id='$id'");
+ $product = mysqli_fetch_assoc($data);
+
+
 require_once "Parts/Header.php";
  ?> 
 <body >
