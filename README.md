@@ -9,3 +9,4 @@ Petek is a web site that supports creating shopping lists and share it with the 
 	jQuery 
 	Visual Studio Code
 
+In order to run the project please uncomment the db file , then run db.php on the browser , and again comment the db file . 
