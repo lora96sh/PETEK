@@ -17,7 +17,7 @@ if(isset($_POST['SubmitButton'])) {
         $body = 'Password Reset link
          Click this link to reset your password!
          http://localhost/HW/password.php';
-        $headers = "From: malika.malik294@gmail.com";
+        $headers = "From: lorashamshoom@gmail.com";
 
         if (mail($to_email, $subject, $body, $headers)) {
             echo "Email successfully sent to $to_email...";
