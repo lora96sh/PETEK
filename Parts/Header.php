@@ -45,25 +45,18 @@ while($row = mysqli_fetch_assoc($data)){
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
-<style>
-#mainNav{
-
-}
-
-</style>
 
 <Nav id="mainNav" class="navbar navbar-expand-lg navbar-dark fixed-top bg-primary">
         <div class="container">
           <a class="navbar-brand" href="list.php">
                 <img src="Pics/shopping logo.jpg" width="45" height="45" alt="">
               </a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+          <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                   aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
-              </button>
+              </button> -->
           <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
-             
               <li class="nav-item active">
                 <a class="nav-link" href="about.php">About</a>
               </li>
@@ -91,8 +84,8 @@ while($row = mysqli_fetch_assoc($data)){
                   <div class="dropdown">
                   <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     My Families
-                </a>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
+                    </a>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink1">
                     <ul style="list-style-type:none;">
                     <?php
                     foreach ($families as $key => $value) {
@@ -103,8 +96,8 @@ while($row = mysqli_fetch_assoc($data)){
                     }
                     ?>
                     </ul>
-                </div>
-               </div>
+                  </div>
+                 </div>
                   </li>
                   <li>
                   <div class="dropdown">
@@ -154,7 +147,7 @@ while($row = mysqli_fetch_assoc($data)){
           </div>
             <script>
                 var checkbox =document.querySelector('input[name=themeColor]')
-                checkbox.addEventListener('change',function () {
+                checkbox.addEventListener("change",function () {
                     if (this.checked){
                         trans()
                         document.documentElement.setAttribute('data-theme','dark')

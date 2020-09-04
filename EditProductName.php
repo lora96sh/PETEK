@@ -36,64 +36,8 @@ require_once "Parts/Header.php";
                     </form>
     </div>
 
-    <div class="modal fade remove" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Are you sure?</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>You are about to delete </p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btnRemoveConfirm btn-danger">Delete</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <div class="add-product-modal modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Add Product</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            <div class="modal-body" id="modalBodyaddProduct">
 
-                    <form id="addProduct" method="POST" action="insert.php">
-                        <div class="row">
-                        <div class="ui-widget">
-                            <div class="col md-6">
-                                <label for="prodName" class="">Product*: </label><br>
-                                <input id="prodName" type="text" class="form-control" placeholder="Product" 
-                                    aria-describedby="helpId" required> 
-                            </div>
-                        </div>
-                            <div class="col md-6">
-                                <label for="prodQuantity" class="">Quantity*: </label><br>
-                                <input id="prodQuantity" type="text" class="form-control" placeholder="Quantity" 
-                                    aria-describedby="helpId" required> 
-                            </div>
-                        </div>
-                        <input type="submit" class="d-none btnSubmit">
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btnAddProduct btn-primary">Add Product</button>
-                    <button type="button" class="btn btn-secondary resetAddProductsForm" data-dismiss="modal">Done</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <br><br>
 
     <div class="footer">
         © 2020 by Lora Shimshon & Shay Ben Haim 

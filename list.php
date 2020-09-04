@@ -14,7 +14,6 @@
         isset($_COOKIE['loginDate'])?$_COOKIE['loginDate']:null;
  $email= isset($_SESSION['email'])? $_SESSION['email']:
         isset($_COOKIE['email'])?$_COOKIE['email']:null;
-
 require_once "Parts/Header.php";
  ?> 
 <body >
@@ -30,9 +29,9 @@ require_once "Parts/Header.php";
             <button type="button" data-toggle="modal" data-target=".add-family-modal" class="btn btn-primary">Create Family</button>
             <button type="button" data-toggle="modal" data-target=".add-list-modal" class="btn btn-primary">Save List</button>
             <!--add from previous list start-->
-                <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Add from previous Lists
-                </a>
+                </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     <ul style="list-style-type:none;">
                     <?php
@@ -48,7 +47,6 @@ require_once "Parts/Header.php";
             <!--add from previous list end-->
             </div>
         </div>
-<!--        <button type="button" name="btnRefreshTable" id="btnRefreshTable" class="btn btn-primary">Refresh Table</button>-->
             <br><br>
             <h3>Products To Buy</h3>
             <table class="table" id="products">
@@ -148,7 +146,6 @@ require_once "Parts/Header.php";
                             </div>
 
                         </div>
-<!--                        <input type="submit" class="d-none btnSubmit">-->
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -182,7 +179,6 @@ require_once "Parts/Header.php";
                                     <input name="addFamily" type="hidden" value="1">
                                 </div>
                             </div>
-<!--                            <input type="submit" class="d-none btnSubmit">-->
                         </form>
                     </div>
                     <div class="modal-footer">
@@ -215,7 +211,6 @@ require_once "Parts/Header.php";
                                 </div>
                             </div>
                             <input name="addList" type="hidden" value="1">
-                            <!--                            <input type="submit" class="d-none btnSubmit">-->
                         </form>
                     </div>
                     <div class="modal-footer">

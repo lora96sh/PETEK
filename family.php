@@ -2,7 +2,7 @@
  
  <?php
  require_once "Parts/Header.php";
-  $isAdmin = false;
+ $isAdmin = false;
  $id = "";
  $fName = "";
  $adminEmail = "";

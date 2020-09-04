@@ -50,7 +50,7 @@
             </div>
         </div>
     </div>
-
+<!-- 
         <div class="modal fade confirm" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -98,7 +98,6 @@
                         </div>
                         <input type="hidden" name="familyId" value="<?=$id?>">
                         <input type="hidden" name="addProduct" value="1">
-<!--                        <input type="submit" class="d-none btnSubmit">-->
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -107,7 +106,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
         <br><br>
         <div class="footer">

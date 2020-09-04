@@ -18,7 +18,7 @@ if (isset($_POST['addList'])) {
         }
         foreach ($response as $key => $value) {
             $pName = $value['pName'];
-            $sql = "INSERT INTO list_products (pName,list_id) VALUES ('$pName','$last_id')";
+            $sql = "INSERT INTO `list_products` (`pName`,`list_id`) VALUES ('$pName','$last_id')";
             if ($conn->query($sql) === false) {
                 die('Invalid query: ' . $conn->error);
             }
@@ -82,7 +82,7 @@ if (isset($_POST['delList'])){
 }
 
 if (isset($_GET['listId'])){
-    $listId = htmlspecialchars($_GET["listId"]);
+    $listId = $_GET["listId"];
     $data = mysqli_query($conn,"select * from list_products where list_id='$listId'");
     $response = array();
 

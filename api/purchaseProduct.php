@@ -26,6 +26,4 @@ if ($conn->query($sql) === TRUE) {
 }
 
 
-//$userId = $_SESSION['userId'];
-// end of the file
 $conn->close();

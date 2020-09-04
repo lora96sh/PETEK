@@ -12,7 +12,7 @@ require_once "Parts/Header.php";
 <body>
 <br><br>
 <div class="container my-3">
-            <h3>Your Products Products</h3>
+            <h3>Your Products </h3>
             <br>
             <table class="table" id="productsList">
                 <div class="container">
