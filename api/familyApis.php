@@ -2,8 +2,9 @@
 <?php 
 header('Content-Type: application/json');
 session_start();
-$email= isset($_SESSION['email'])? $_SESSION['email']:
-    isset($_COOKIE['email'])?$_COOKIE['email']:null;
+$email= isset($_SESSION['email'])? $_SESSION['email']:null;
+
+    
 if (isset($_POST['addFamily'])) {
     $fName = $_POST['fName'];
     $adminEmail = $_SESSION['email'];
@@ -160,7 +161,9 @@ if (isset($_POST['rejectReq'])){
     }
     exit;
 }
+ 
 
+    
 
 // end of the file
 $conn->close();

@@ -1,0 +1,341 @@
+body {
+	background-image: linear-gradient(#d1e0e0, #75a3a3);
+	height: 100%;
+}
+
+
+/*########## sign in page ########   */
+
+.card-signin {
+	margin-top: 20px;
+}
+img.img-signin {
+	margin: auto;
+	display: block;
+	padding: 0 2rem 2rem;
+}
+
+.login-form {
+	width: 50%;
+	margin: auto;
+	display: block;
+	margin-bottom: 10px;
+}
+
+.login-form button {
+	width: 100%;
+	margin-bottom: 10px;
+	background-color: #ff6600;
+}
+
+.card-signin {
+	border-radius: 15px;
+}
+
+a.createAccount-btn {
+	font-size: 1.5rem;
+	text-align: center;
+	display: block;
+	color: #ff6600;
+	text-shadow: 2px 2px black;
+}
+button {
+	border-radius: 0px;
+	border-style: none;
+}
+
+/*########## End sign in page ##########  */
+
+/* ############ start of footer########### */
+
+.size {
+	padding: 10px;
+	border-radius: 15px;
+}
+
+.contactUs {
+	color: white;
+	text-align: left;
+	margin: auto;
+	display: block;
+	font-size: 1 rem;
+	padding: 10px;
+}
+
+.footer {
+	margin-top: 40px;
+	margin-bottom: 0px;
+}
+/* ####### End of footer########### */
+/* ############ Nav Bar##############  */
+
+ul.top-right li {
+	float: right;
+}
+
+.dropdown:hover .dropdown-content {
+	display: block;
+}
+
+.dropdown-content a {
+	color: black;
+	padding: 12px 16px;
+	text-decoration: none;
+	display: block;
+}
+
+/* End of Nav bar */
+/* ############# Regist #############33 */
+
+.registForm input {
+	border-color: darkgrey;
+	border-width: 2px;
+	width: 60%;
+	margin: auto;
+	display: block;
+	box-shadow: 2px 2px darkslategrey;
+	border-radius: 8px;
+}
+.registForm label {
+	display: block;
+	text-align: center;
+	line-height: 150%;
+	font-size: 1.2rem;
+	margin-bottom: 2px;
+}
+.registForm button {
+	background-color: #ff6600;
+	margin: auto;
+	display: block;
+	width: 60%;
+	border-width: 2px;
+	box-shadow: 2px 2px darkslategrey;
+	border-radius: 8px;
+	margin-top: 20px;
+}
+.regist-card {
+	margin-top: 30px;
+	background-color: white;
+	border-radius: 15px;
+}
+.regist-card h2 {
+	text-align: center;
+	color: #ff6600;
+	margin-bottom: 15px;
+}
+
+/* ############# End of  Regist #########*/
+
+/* Main page */
+.carouselMain {
+	width: 80%;
+	margin: auto;
+	display: block;
+	margin-top: 40px;
+}
+
+.carouselMain h5 {
+	color: darkorange;
+	font-size: 1.5rem;
+	text-shadow: 2px 2px black;
+}
+.howToUseImg {
+	margin: auto;
+	display: block;
+	border-radius: 10px;
+	margin-top: 30px;
+}
+.howToUse {
+	background-color: #ff6600;
+	margin: auto;
+	display: block;
+	margin-top: 10px;
+}
+.about {
+	color: white;
+	text-shadow: 2px 2px #ff6600;
+	font-size: 1.5rem;
+	margin-top: 50px;
+	text-align: left;
+	display: block;
+}
+
+/* ######### End of main page####### */
+
+/* ############# List Page ###########*/
+
+.Main-list-container {
+	margin: auto;
+	margin-top: 20px;
+}
+
+.dropdown:hover .dropdown-content {
+	display: block;
+}
+.Main-list-container {
+	display: block;
+	margin: auto;
+	margin-top: 30px;
+}
+/* ############# End of List Page ###########*/
+html {
+	scroll-behavior: smooth;
+}
+
+.logo {
+	width: 45px;
+	height: 45px;
+	margin-left: 10px;
+	padding: 5px;
+}
+.navigation {
+	float: right;
+	height: 100%;
+}
+#mainNav {
+	height: 55px;
+}
+
+.navigation a {
+	height: 100%;
+	display: table;
+	float: left;
+	padding: 0px 20px;
+}
+
+.navigation a li {
+	font-weight: bold;
+}
+
+.registrationBox {
+	background-color: DodgerBlue;
+	color: white;
+	position: relative;
+	width: 320px;
+	height: 620px;
+	margin-top: 30%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	padding: 25px 30px;
+	font-size: 20px;
+}
+
+#about-container {
+	background-image: url('Pics/logo.jpg');
+}
+#about-container p {
+	font-weight: bold;
+}
+.registrationBox input {
+	width: 100%;
+	margin-bottom: 5px;
+	margin-top: 5px;
+	height: 30px;
+}
+.registrationBox button {
+	border-radius: 2px;
+	border-color: white;
+	position: relative;
+	margin-top: 15px;
+	width: 100%;
+}
+.passwordBox {
+	background-color: blue;
+	color: white;
+	position: relative;
+	width: 320px;
+	height: 450px;
+	margin-top: 22%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	padding: 25px 30px;
+	font-size: 20px;
+}
+
+.success {
+	color: green;
+}
+
+.mailAndpass {
+	border: none;
+	border-bottom: 1px solid white;
+	background: transparent;
+	height: 30px;
+	color: white;
+}
+
+#massage2 {
+	color: red;
+	font-size: 10px;
+}
+#submit {
+	color: black;
+	background-color: green;
+}
+
+#list {
+	background-color: lightgreen;
+}
+
+.products .qua {
+	display: inline;
+	text-align: center;
+	padding: 10px;
+	margin-left: 50%;
+}
+
+.txt {
+	border: none;
+	border-bottom: 2px solid#000;
+	padding: 10px;
+	outline: none;
+	font-size: 18px;
+}
+
+h3 {
+	margin: 10px 0;
+}
+
+.products {
+	width: 100%;
+	background: rgba(255, 255, 255, 0.5);
+	padding: 10px;
+	margin: 6px 0;
+	overflow: hidden;
+}
+
+.products i {
+	float: right;
+	margin-left: 20px;
+	cursor: pointer;
+}
+
+.purchased .products {
+	background-color: darkgray;
+	color: white;
+}
+
+.navButton {
+	text-decoration: none;
+	color: black;
+}
+
+#addBtn {
+	background-color: green;
+}
+
+#addProduct {
+	margin-top: 76px;
+}
+
+.mark {
+	background: greenyellow;
+}
+
+#loginBtn {
+	color: black;
+}
+
+.add-product-modal .modal-dialog {
+	max-width: 900px;
+}

@@ -2,6 +2,21 @@
 <?php 
 header('Content-Type: application/json');
 session_start();
+
+
+if (isset($_POST['deleteList'])){
+
+$email=$_SESSION['email'];
+$sql="DELETE FROM products WHERE user_email='$email'";
+
+if ($conn->query($sql)===TRUE) {
+    echo json_encode(1);
+}else {
+    echo json_encode($conn->error);
+}
+
+}
+
 if (isset($_POST['addList'])) {
     $lName = $_POST['lName'];
     $userEmail = $_SESSION['email'];
@@ -100,6 +115,9 @@ if (isset($_GET['listId'])){
     }
     header("Location: ../list.php?status=success");
 }
+
+//delete cuurent products in current list
+
 
 // end of the file
 $conn->close();

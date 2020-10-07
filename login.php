@@ -1,11 +1,12 @@
-
 <?php
 require 'db.php';
 session_start();
 $_SESSION['loginDate'] = date("h:i:sa");
  $loginDate= isset($_SESSION['loginDate'])? $_SESSION['loginDate']:
         isset($_COOKIE['loginDate'])?$_COOKIE['loginDate']:null;
+
 $email=$_POST['email'];
+$_SESSION['email']=$email;
 $password=$_POST['password'];
 if(empty($email)|| empty($password) ){
 
@@ -37,4 +38,3 @@ if(empty($email)|| empty($password) ){
     }header("location: index.php?error=nouser");
 
 }
-
