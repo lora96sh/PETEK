@@ -1,49 +1,30 @@
-<?php
-//   session_start();
-
-//     $email= isset($_SESSION['email'])? $_SESSION['email']:
-//         isset($_COOKIE['email'])?$_COOKIE['email']:null;
-
-//     $phone= isset($_SESSION['phone'])? $_SESSION['phone']:
-//         isset($_COOKIE['phone'])?$_COOKIE['phone']:null;
-
-//     $nickname= isset($_SESSION['nickname'])? $_SESSION['nickname']:
-//        isset($_COOKIE['nickname'])?$_COOKIE['nicknaeme']:null;
-    
-//     $password =  isset($_SESSION['password'])? $_SESSION['password']:
-//     isset($_COOKIE['password'])?$_COOKIE['password']:null;
-
-
-//     if(isset($_POST["email"])){
-//       $email=htmlspecialchars($_POST['email']);
-//       $password=htmlspecialchars($_POST['password']);
-//       $phone=htmlspecialchars($_POST['phone']);
-//       $nickname=htmlspecialchars($_POST('nickname'));
-     
-//            $_SESSION['email'] = $email;
-//            $_SESSION['password'] = $password;
-//            $_SESSION['phone']=$phone;
-//            $_SESSION['nickname']=$nickname;
-  
-       
-//    }
-  
-//     $_SESSION['email'] = $email;
-//     $_POST['email']=$email;
-//     $_SESSION['phone'] = $phone;
-//     $_SESSION['nickname'] = $nickname;
-//     $_SESSION['password'] = $password;
-
-
-      
-  ?>
-
-
 <?php  require_once "Parts/Header.php"; ?>
+<?php  
+
+if(isset($_GET['error'])){
+    switch ($_GET['error']) {
+        case "notMatching":
+          $massege = "Emails are not matching";
+          break;
+          
+        case "userTaken":
+            $massege= "User is taken";
+        break;
+
+        case "incorrectPassword":
+            $massege = "Password must be at least 8 characters, include at least one upper case letter, one number, one special character.";
+        break;
+}
+}
+?>
 
 <body>
 
     <div class="container-fluid">
+        <?php if(isset($massege))
+     
+        echo '<br><h3 style="text-align:center;color:Red;text-shadow:none;">'.$massege.'</h3>';
+        ?>
         <div class="row">
             <div class="col-md-4"></div>
             <div class="col-sm-12 col-md-4">
@@ -51,7 +32,7 @@
                     <div class="row">
                         <div class="col-sm-12 middle-regist">
                             <h2>Registration </h2>
-                            <form class="registForm" action="insertCustomer.php" method="post">
+                            <form class="registForm" action="api/insertCustomer.php" method="post">
                                 <div class="form-group">
                                     <label for="email">Email address:</label>
                                     <input type="email" name="email" class=" form-control" id="email" required>
@@ -79,13 +60,9 @@
                 </div>
             </div>
             <div class="col-md-4"></div>
+            <br><br><br>
         </div>
-
-
-
     </div>
-
-
 
 
 

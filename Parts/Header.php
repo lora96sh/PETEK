@@ -31,7 +31,7 @@ while($row = mysqli_fetch_assoc($data)){
     <title>Start</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="CSS/style.css">
     <link rel="stylesheet" href="./CSS/dark.css">
 
     <!-- Bootstrap CSS -->
@@ -115,7 +115,7 @@ while($row = mysqli_fetch_assoc($data)){
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Add Family</h5>
+                    <h5 style="color:black; text-shadow:none; " class=" modal-title">Add Family</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

@@ -9,8 +9,8 @@ $email=$_POST['email'];
 $_SESSION['email']=$email;
 $password=$_POST['password'];
 if(empty($email)|| empty($password) ){
-
-    header("Location:index.php?status=showMsg");
+    session_destroy();
+    header("Location:loginScreen.php?message=empty");
     exit();
 }else{
     $sql ="SELECT * FROM customers WHERE email = '$email' ";
@@ -18,7 +18,8 @@ if(empty($email)|| empty($password) ){
     $row = $result->fetch_assoc();
     if(!empty($row)){
     if($row['password'] !== $password){
-        header("location: index.php?error=wrongpassword");
+        session_destroy();
+        header("location: loginScreen.php?message=wrongpassword");
         exit();
     }else{
         $loginDate = date("h:i:sa");
@@ -35,6 +36,10 @@ if(empty($email)|| empty($password) ){
 
     }
 
-    }header("location: index.php?error=nouser");
+    }else{
+        session_destroy();
 
+    header("location: loginScreen.php?message=nouser");
+
+}
 }

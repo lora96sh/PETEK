@@ -2,7 +2,10 @@ body {
 	background-image: linear-gradient(#d1e0e0, #75a3a3);
 	height: 100%;
 }
-
+h1,h2,h3,h4,h5{
+	color: #ff6600;
+	text-shadow: 2px 2px black;
+}
 
 /*########## sign in page ########   */
 

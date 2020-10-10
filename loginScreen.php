@@ -1,27 +1,34 @@
-<html lang="en">
-
-<head>
-    <title>Start</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="./CSS/dark.css">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-    <link rel="stylesheet" href="bootstrap-4.5.2-dist/css/bootstrap-grid.css" />
-    <link rel="stylesheet" href="bootstrap-4.5.2-dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="style.css" />
-
-</head>
-
 <?php  require_once "Parts/Header.php"; ?>
+<?php 
+if(isset($_GET['message'])){
+    switch($_GET['message']){
+        case "registSuccess":
+          $massege = "Registed successfully! Please login" ;
+        break;
+        
+        case "wrongpassword":
+            $massege = "Wrong Password";
+        break;
+
+        case "empty" :
+            $massege ="Empty field";
+        break;
+
+        case "nouser":
+            $massege=" user is not exist";
+        break;
+    }
+}
+
+?>
 
 <body>
 
+
     <body class="loginbody">
-
-
+        <?php if(isset($massege))
+        echo '<h3 style="text-align:center">'.$massege.'</h3>' ; 
+        ?>
         <div class="container ">
 
             <div class="row">
@@ -70,4 +77,4 @@
 
     </body>
 
-</html>
+    </html>
